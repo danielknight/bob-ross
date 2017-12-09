@@ -51,7 +51,8 @@ def getEpisodeUrls(seasonUrlDict):
     return episodesBySeason
     driver.close()
 
-seasons = getPlaylistUrls(playlistDir)
+#seasons = getPlaylistUrls(playlistDir)
+seasons = {'The Joy of Painting - Season 1': "https://www.youtube.com/playlist?list=PLAEQD0ULngi69x_7JbQvSMprLRK_KSVLu"}
 masterEpisodes = getEpisodeUrls(seasons)
 for k, v in masterEpisodes.items():
     print(k + '---------')
@@ -59,3 +60,4 @@ for k, v in masterEpisodes.items():
         print(k2 + ': ' + v2)
     print('\n\n')
 
+print(masterEpisodes)
