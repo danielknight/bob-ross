@@ -58,6 +58,7 @@ def getEpisodeUrls(seasonUrlDict):
 
 
 def scrape(video_dict):
+    print(video_dict)
     if not os.path.exists('Transcripts'):
         os.makedirs('Transcripts')
     os.chdir('Transcripts')
@@ -68,30 +69,31 @@ def scrape(video_dict):
         os.chdir(season)
         cwd = os.getcwd()
         for episode_title, link in season_dict.items():
-            if not os.path.exists(episode_title+'.txt'):
+            if not os.path.exists(episode_title + '/' + episode_title + '.txt'):
                 write_transcript(link, episode_title+'.txt', driver)
         os.chdir('..')
 
 
 def write_transcript(link, outfile, driver):
+    print(link + "hi")
     #driver.get("https://www.youtube.com/watch?v=wdr4t7cQW2U")
     driver.get(link)
     try:
-        time.sleep(5)
-        elem = WebDriverWait(driver, 2).until(
-            EC.visibility_of_element_located((By.ID, 'action-panel-overflow-button')))
-        elem.click()
+        time.sleep(2)
+        driver.find_element_by_xpath('//button[@aria-label="More actions"]').click()
+        #elem = WebDriverWait(driver, 5).until(
+         #   EC.visibility_of_element_located((By.XPATH, "//[@aria-label='More actions')]")))
+        #elem.click()
         print('More Clicked')
-        button = WebDriverWait(driver, 2).until(
-            EC.visibility_of_element_located((By.CLASS_NAME, "action-panel-trigger-transcript"))
-        )
+        button = driver.find_element_by_xpath('//yt-formatted-string[contains(text(),"Open transcript")]')
         button.click()
         print("trans clicked")
         # open the Transcript so it gets sent to the DOM
         try:
-            transcript = WebDriverWait(driver, 2).until(
-                EC.visibility_of_element_located((By.ID, 'transcript-scrollbox'))
-            )  # Scrape the transcript from the DOM
+            time.sleep(2)
+            transcript = driver.find_element_by_xpath('//ytd-transcript-body-renderer')
+            print(transcript)
+            # Scrape the transcript from the DOM
         except TimeoutException:
             print("Timeout triggered, retrying...")
             autoCapMenu = WebDriverWait(driver, 3).until(
@@ -106,11 +108,11 @@ def write_transcript(link, outfile, driver):
             button.click()
             time.sleep(1)"""
             transcript = WebDriverWait(driver, 4).until(
-                EC.visibility_of_element_located((By.ID, 'transcript-scrollbox'))
-            )
+                EC.visibility_of_element_located((By.ID, 'transcript-scrollbox')))
         html = transcript.get_attribute('innerHTML')
+        print(html)
         soup = BeautifulSoup(html, "html.parser")
-        soup = soup.find_all("div", class_='caption-line-text')
+        soup = soup.find_all("div", class_='cue style-scope ytd-transcript-body-renderer')
         vid_text = []
         count = 0
         try:
@@ -135,7 +137,8 @@ def write_transcript(link, outfile, driver):
 #masterEpisodes = getEpisodeUrls(seasons)
 #print(masterEpisodes)
 #time.sleep(5)
-
+dutch = {'The Joy of Painting - Season 25': {'Bob Ross - Not Quite Spring (Season 25 Episode 3)': 'https://www.youtube.com/watch?v=N_u6x7LeyTM&list=PLAEQD0ULngi6XUucZGmcQeVRGHNg2WVsB&index=3'},
+         'The Joy of Painting - Season 2': {'Bob Ross - Reflections (Season 2 Episode 8)': 'https://www.youtube.com/watch?v=0FYfo94qefg&list=PLAEQD0ULngi5VAEOviVE6svrUW2axISf6&index=8'}}
 masterEpisodes = {'The Joy of Painting - Season 31': {
     'Bob Ross - Reflections of Calm (Season 31 Episode 1)': 'https://www.youtube.com/watch?v=kJFB6rH3z2A&list=PLAEQD0ULngi5PAjhOL-GfvbcQDn2Hujoj&index=1',
     'Bob Ross - Before the Snowfall (Season 31 Episode 2)': 'https://www.youtube.com/watch?v=_MdMhQIOL1Y&list=PLAEQD0ULngi5PAjhOL-GfvbcQDn2Hujoj&index=2',
@@ -570,12 +573,12 @@ missing = {'The Joy of Painting Season 8': {"Bob Ross - Bubbling Mountain Brook 
 
 
 
-for k, v in masterEpisodes.items():
+for k, v in dutch.items():
     print(k + '---------')
     for k2, v2 in v.items():
         print(k2 + ': ' + v2)
     print('\n\n')
-scrape(masterEpisodes)
+scrape(dutch)
 
 
 
