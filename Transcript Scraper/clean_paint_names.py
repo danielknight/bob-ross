@@ -4,7 +4,8 @@ import regex as re
 import collections
 dir = os.path.dirname(__file__)
 
-transcripts = [r"C:\Users\Danny\PycharmProjects\BobRoss\Transcript Scraper\Transcripts\The Joy of Painting - Season 1\Bob Ross - Autumn Mountain (Season 1 Episode 7)\Bob Ross - Autumn Mountain (Season 1 Episode 7).txt"]
+transcripts = [r"C:\Users\Danny\PycharmProjects\BobRoss\Transcript Scraper\Transcripts\The Joy of Painting - Season 2\Bob Ross - Reflections (Season 2 Episode 8)\Bob Ross - Reflections (Season 2 Episode 8).txt",
+               r"C:\Users\Danny\PycharmProjects\BobRoss\Transcript Scraper\Transcripts\The Joy of Painting - Season 25\Bob Ross - Not Quite Spring (Season 25 Episode 3)\Bob Ross - Not Quite Spring (Season 25 Episode 3).txt"]
 transcripts = []
 def remove_punctuation(text):
     regex = re.compile('[%s]' % re.escape(string.punctuation))
@@ -24,8 +25,10 @@ def replace(transcripts):
                  'CAD YELLOW': 'CADMIUM YELLOW',
                  'RUSSIAN BLUE': 'PRUSIAN BLUE',
                  'PRUSSIAN BLUE': 'PRUSIAN BLUE',
+                 'PPRUSIAN BLUE' : 'PRUSIAN BLUE',
                  'PTHALO BLUE': 'PHTHALO BLUE',
                  'BLACK': 'MIDNIGHT BLACK',
+                 'PHPHPHTHALO': 'PHTHALO',
                  'MAGIC WHITE': 'LIQUID WHITE',
                  'VAN DYCK BROWN': 'VAN DYKE BROWN',
                  'DYCK': 'DYKE'}
