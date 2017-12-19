@@ -89,7 +89,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 #define vectorizer parameters
 tfidf_vectorizer = TfidfVectorizer(max_df=0.8, max_features=200000,
-                                 min_df=0.1, stop_words='english',
+                                 min_df=0.2, stop_words='english',
                                  use_idf=True, tokenizer=tokenize_and_stem, ngram_range=(1,3))
 
 joblib.dump(tfidf_vectorizer, 'vectorizer.pkl')
